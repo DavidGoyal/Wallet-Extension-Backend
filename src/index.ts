@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 app.get("/txn", async (req: Request, res: Response) => {
 	try {
-		const { address } = req.body;
+		const { address } = req.query;
 		if (!address) {
 			res.status(400).json({ success: false, error: "Address is required" });
 			return;
@@ -15,7 +15,7 @@ app.get("/txn", async (req: Request, res: Response) => {
 
 		const txn = await prisma.token.findFirst({
 			where: {
-				address: address,
+				address: address as string,
 			},
 		});
 
