@@ -19,7 +19,6 @@ model Token {
   creator     String
   createdAt   DateTime @default(now())
   initialMint Int
-  slot        Int
 
   @@index([address])
 }
