@@ -1,8 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import express, { Request, Response } from "express";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(
+	cors({
+		origin: "*",
+		methods: ["GET", "POST", "PUT", "DELETE"],
+	})
+);
 const prisma = new PrismaClient();
 
 app.get("/txn", async (req: Request, res: Response) => {
@@ -23,15 +30,13 @@ app.get("/txn", async (req: Request, res: Response) => {
 			res.status(404).json({ success: false, error: "Token not found" });
 			return;
 		}
-		res
-			.status(200)
-			.json({
-				success: true,
-				txn: txn.transaction,
-				creator: txn.creator,
-				initialMint: txn.initialMint,
-				createdAt: txn.createdAt,
-			});
+		res.status(200).json({
+			success: true,
+			txn: txn.transaction,
+			creator: txn.creator,
+			initialMint: txn.initialMint,
+			createdAt: txn.createdAt,
+		});
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ success: false, error: "Internal server error" });
