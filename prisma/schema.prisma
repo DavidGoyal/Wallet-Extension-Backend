@@ -14,9 +14,11 @@ datasource db {
 }
 
 model Token {
-  address     String @id
+  address     String   @id
   transaction String
   creator     String
+  createdAt   DateTime @default(now())
+  initialMint Int
 
   @@index([address])
 }

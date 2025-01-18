@@ -25,7 +25,13 @@ app.get("/txn", async (req: Request, res: Response) => {
 		}
 		res
 			.status(200)
-			.json({ success: true, txn: txn.transaction, creator: txn.creator });
+			.json({
+				success: true,
+				txn: txn.transaction,
+				creator: txn.creator,
+				initialMint: txn.initialMint,
+				createdAt: txn.createdAt,
+			});
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ success: false, error: "Internal server error" });
