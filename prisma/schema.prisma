@@ -22,3 +22,14 @@ model Token {
 
   @@index([address])
 }
+
+model Transaction {
+  value        String
+  buyerAddress String
+  tokenAddress String
+  signature    String
+  createdAt    DateTime @default(now())
+
+  @@id([buyerAddress, tokenAddress])
+  @@index([tokenAddress])
+}

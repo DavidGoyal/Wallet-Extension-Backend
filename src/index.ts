@@ -12,7 +12,7 @@ app.use(
 );
 const prisma = new PrismaClient();
 
-app.get("/txn", async (req: Request, res: Response) => {
+app.get("/token", async (req: Request, res: Response) => {
 	try {
 		const { address } = req.query;
 		if (!address) {
@@ -66,6 +66,27 @@ app.get("/txn", async (req: Request, res: Response) => {
 			slot: json.result.slot,
 		});
 		return;
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ success: false, error: "Internal server error" });
+	}
+});
+
+app.get("/txns", async (req: Request, res: Response) => {
+	try {
+		const { address } = req.query;
+		if (!address) {
+			res.status(400).json({ success: false, error: "Address is required" });
+			return;
+		}
+
+		const txns = await prisma.transaction.findMany({
+			where: {
+				tokenAddress: address as string,
+			},
+		});
+
+		res.status(200).json({ success: true, txns });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ success: false, error: "Internal server error" });
